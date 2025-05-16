@@ -45,21 +45,13 @@ body {
 
 .logo {
     display: flex;
-<<<<<<< HEAD
-    justify-content: flex-start;
-=======
     justify-content: center;
     align-items: center;
->>>>>>> 515a80e (update landing page)
     margin-bottom: 24px;
 }
 
 .logo img {
-<<<<<<< HEAD
-    height: 40px;
-=======
     height: 80px;
->>>>>>> 515a80e (update landing page)
 }
 
 h1 {
@@ -209,19 +201,6 @@ input:focus {
     font-size: 14px;
     color: var(--light-text);
 }
-<<<<<<< HEAD
-.logo {
-    display: flex;
-    justify-content: center; /* Meratakan ke tengah */
-    align-items: center;     /* Vertikal center */
-    margin-bottom: 24px;
-}
-
-.logo img {
-    height: 100px; /* Perbesar ukuran logo */
-}
-
-=======
 
 /* Landing Page Styles */
 .landing-page {
@@ -330,4 +309,3 @@ input:focus {
 .button-group .btn {
     margin-top: 0;
 }
->>>>>>> 515a80e (update landing page)
