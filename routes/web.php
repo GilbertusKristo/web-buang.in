@@ -17,5 +17,3 @@ Route::post('/auth/login', [AuthWebController::class, 'login'])->name('web.auth.
 Route::get('/dashboard', function () {
     return view('pages.dashboard');
 })->name('dashboard');
-
-
