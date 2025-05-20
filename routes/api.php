@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\PickupRequestController;
+use App\Http\Controllers\Api\WasteSaleController;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 // ==============================
@@ -32,6 +33,10 @@ Route::middleware(['auth:sanctum', EnsureFrontendRequestsAreStateful::class])->g
     Route::get('/pickup-requests/history', [PickupRequestController::class, 'history']);
     Route::get('/pickup-requests/history-by-date', [PickupRequestController::class, 'historyByDate']);
 
+    Route::post('/waste-sales', [WasteSaleController::class, 'store']);
+    Route::get('/waste-sales', [WasteSaleController::class, 'index']);
+    Route::get('/waste-sales/history', [WasteSaleController::class, 'historyByDate']);
+
     // === Admin-Only Routes ===
     Route::middleware([\App\Http\Middleware\RoleMiddleware::class . ':admin'])->group(function () {
 
@@ -56,5 +61,8 @@ Route::middleware(['auth:sanctum', EnsureFrontendRequestsAreStateful::class])->g
 
         // Admin search reports
         Route::patch('/reports/{id}/status', [ReportController::class, 'updateStatus']); // Admin change report status
+
+        Route::patch('/waste-sales/{id}/status', [WasteSaleController::class, 'updateStatus']);
+        Route::get('/waste-sales/summary', [WasteSaleController::class, 'summary']);
     });
 });
