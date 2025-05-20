@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Cloudinary\Cloudinary;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -24,6 +26,7 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'role' => 'user',
             'status' => 'Aktif',
+            'profile_picture' => 'user.jpg',
             'joined_date' => now(),
             'password' => bcrypt($request->password),
         ]);
@@ -57,6 +60,32 @@ class AuthController extends Controller
             'user' => $user
         ]);
     }
+    public function updateProfilePicture(Request $request, Cloudinary $cloudinary)
+    {
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $uploadedFile = $cloudinary->uploadApi()->upload(
+            $request->file('profile_picture')->getRealPath(),
+            ['folder' => 'profile_pictures']
+        );
+        
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $user->profile_picture = $uploadedFile['secure_url'];
+        $user->save();
+
+        return response()->json([
+            'message' => 'Foto profil berhasil diperbarui.',
+            'profile_picture_url' => $user->profile_picture
+        ]);
+    }
+
+
+
+
+
     public function me(Request $request)
     {
         return response()->json([
@@ -70,7 +99,7 @@ class AuthController extends Controller
         return response()->json($users);
     }
 
-    // Get User By ID
+
     public function show($id)
     {
         $user = User::find($id);
@@ -93,7 +122,7 @@ class AuthController extends Controller
 
         $request->validate([
             'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|string|email|max:255|unique:users,email,'.$id,
+            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $id,
             'phone' => 'sometimes|string|max:15',
         ]);
 
